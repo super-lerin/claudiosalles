@@ -1,528 +1,1079 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Claudio Salles — Jornalista, Músico & Videomaker</title>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/index.min.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.13/index.min.css" />
-<style>
-  :root{
-    --bg:#0a0e1a;
-    --bg-2:#111827;
-    --surface:rgba(255,255,255,0.04);
-    --surface-2:rgba(255,255,255,0.07);
-    --border:rgba(255,255,255,0.08);
-    --text:#e8ecf4;
-    --muted:#9aa3b2;
-    --accent:#ff6b6b;
-    --accent-2:#f472b6;
-    --accent-3:#8b5cf6;
-    --gold:#fbbf24;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:'Inter',system-ui,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.6;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:'';
-    position:fixed;inset:0;
-    background:
-      radial-gradient(circle at 20% 10%,rgba(139,92,246,0.18),transparent 50%),
-      radial-gradient(circle at 80% 80%,rgba(244,114,182,0.15),transparent 50%),
-      radial-gradient(circle at 50% 50%,rgba(255,107,107,0.08),transparent 70%);
-    pointer-events:none;z-index:0;
-  }
-  img{max-width:100%;display:block}
-  a{color:inherit;text-decoration:none}
-
-  /* NAV */
-  nav{
-    position:fixed;top:0;left:0;right:0;z-index:100;
-    padding:1.2rem 2rem;
-    background:rgba(10,14,26,0.7);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--border);
-    transition:all .3s ease;
-  }
-  nav.scrolled{padding:.8rem 2rem;background:rgba(10,14,26,0.9)}
-  .nav-inner{
-    max-width:1200px;margin:0 auto;
-    display:flex;align-items:center;justify-content:space-between;
-  }
-  .logo{
-    font-family:'Playfair Display',serif;
-    font-size:1.4rem;font-weight:700;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    -webkit-background-clip:text;background-clip:text;
-    -webkit-text-fill-color:transparent;
-    letter-spacing:.5px;
-  }
-  .nav-links{display:flex;gap:2rem;list-style:none}
-  .nav-links a{
-    font-size:.9rem;color:var(--muted);
-    transition:color .2s;position:relative;
-  }
-  .nav-links a:hover{color:var(--text)}
-  .nav-links a::after{
-    content:'';position:absolute;bottom:-6px;left:0;
-    width:0;height:2px;
-    background:linear-gradient(90deg,var(--accent),var(--accent-2));
-    transition:width .3s;
-  }
-  .nav-links a:hover::after{width:100%}
-  .menu-btn{display:none;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer}
-
-  /* HERO */
-  .hero{
-    position:relative;min-height:100vh;
-    display:flex;align-items:center;justify-content:center;
-    padding:8rem 2rem 4rem;
-    overflow:hidden;
-  }
-  .hero-bg{
-    position:absolute;inset:0;z-index:0;
-    background-image:url('https://image.qwenlm.ai/public_source/c5706fea-6889-4daf-b88c-403b7465c5c4/1aa4791e4-ae9a-4a9b-adfb-649a05af61ed.png');
-    background-size:cover;background-position:center;
-    opacity:.35;
-    filter:blur(2px);
-  }
-  .hero-bg::after{
-    content:'';position:absolute;inset:0;
-    background:linear-gradient(180deg,transparent 0%,var(--bg) 100%);
-  }
-  .hero-inner{
-    position:relative;z-index:1;
-    max-width:1200px;width:100%;
-    display:grid;grid-template-columns:1fr 1fr;gap:4rem;
-    align-items:center;
-  }
-  .hero-text h1{
-    font-family:'Playfair Display',serif;
-    font-size:clamp(2.5rem,6vw,5rem);
-    line-height:1.05;font-weight:700;
-    margin-bottom:1rem;
-  }
-  .hero-text h1 .grad{
-    background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 50%,var(--accent-3) 100%);
-    -webkit-background-clip:text;background-clip:text;
-    -webkit-text-fill-color:transparent;
-  }
-  .hero-text .tag{
-    display:inline-block;
-    font-size:.85rem;letter-spacing:3px;text-transform:uppercase;
-    color:var(--muted);margin-bottom:1.5rem;
-    padding:.5rem 1rem;border:1px solid var(--border);border-radius:999px;
-    background:var(--surface);
-  }
-  .hero-text p{
-    font-size:1.1rem;color:var(--muted);max-width:500px;
-    margin-bottom:2rem;
-  }
-  .cta-row{display:flex;gap:1rem;flex-wrap:wrap}
-  .btn{
-    display:inline-flex;align-items:center;gap:.6rem;
-    padding:.9rem 1.6rem;border-radius:999px;
-    font-weight:600;font-size:.95rem;
-    transition:all .25s ease;cursor:pointer;border:none;
-  }
-  .btn-primary{
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    color:#fff;box-shadow:0 10px 30px rgba(244,114,182,.3);
-  }
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(244,114,182,.45)}
-  .btn-ghost{
-    background:var(--surface);color:var(--text);
-    border:1px solid var(--border);
-  }
-  .btn-ghost:hover{background:var(--surface-2);border-color:var(--accent-2)}
-
-  .hero-img{
-    position:relative;display:flex;justify-content:center;
-  }
-  .hero-img .frame{
-    position:relative;width:380px;height:380px;max-width:100%;
-    border-radius:50%;
-    padding:6px;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2),var(--accent-3));
-    animation:spin 20s linear infinite;
-    box-shadow:0 30px 80px rgba(244,114,182,.25);
-  }
-  .hero-img .frame img{
-    width:100%;height:100%;object-fit:cover;
-    border-radius:50%;
-    animation:spin 20s linear infinite reverse;
-    border:6px solid var(--bg);
-  }
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .hero-img .ring{
-    position:absolute;inset:-20px;border-radius:50%;
-    border:1px dashed rgba(255,255,255,.1);
-    animation:spin 30s linear infinite reverse;
-  }
-  .hero-img .ring::before,.hero-img .ring::after{
-    content:'';position:absolute;width:10px;height:10px;border-radius:50%;
-    background:var(--accent-2);box-shadow:0 0 20px var(--accent-2);
-  }
-  .hero-img .ring::before{top:0;left:50%;transform:translateX(-50%)}
-  .hero-img .ring::after{bottom:0;left:50%;transform:translateX(-50%);background:var(--accent-3);box-shadow:0 0 20px var(--accent-3)}
-
-  /* SECTIONS */
-  section{position:relative;z-index:1;padding:6rem 2rem}
-  .container{max-width:1200px;margin:0 auto}
-  .section-head{text-align:center;margin-bottom:4rem}
-  .section-head .eyebrow{
-    font-size:.8rem;letter-spacing:4px;text-transform:uppercase;
-    color:var(--accent-2);margin-bottom:1rem;display:block;
-  }
-  .section-head h2{
-    font-family:'Playfair Display',serif;
-    font-size:clamp(2rem,4vw,3.2rem);font-weight:700;
-    margin-bottom:1rem;
-  }
-  .section-head p{color:var(--muted);max-width:600px;margin:0 auto}
-
-  /* ABOUT */
-  .about-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:1.5rem;
-  }
-  .role-card{
-    background:var(--surface);border:1px solid var(--border);
-    border-radius:20px;padding:2rem;
-    transition:all .3s ease;position:relative;overflow:hidden;
-  }
-  .role-card::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:3px;
-    background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3));
-    transform:scaleX(0);transform-origin:left;transition:transform .4s;
-  }
-  .role-card:hover{transform:translateY(-6px);border-color:rgba(244,114,182,.3);background:var(--surface-2)}
-  .role-card:hover::before{transform:scaleX(1)}
-  .role-icon{
-    width:56px;height:56px;border-radius:14px;
-    background:linear-gradient(135deg,rgba(244,114,182,.15),rgba(139,92,246,.15));
-    display:flex;align-items:center;justify-content:center;
-    font-size:1.6rem;margin-bottom:1.2rem;
-  }
-  .role-card h3{font-size:1.15rem;margin-bottom:.5rem}
-  .role-card p{color:var(--muted);font-size:.92rem}
-
-  /* MUSIC / EMBED */
-  .music-section{
-    background:linear-gradient(180deg,transparent,rgba(139,92,246,.05),transparent);
-  }
-  .embed-wrap{
-    max-width:480px;margin:0 auto;
-    background:var(--surface);border:1px solid var(--border);
-    border-radius:24px;overflow:hidden;
-    box-shadow:0 30px 80px rgba(0,0,0,.5);
-    transition:transform .4s;
-  }
-  .embed-wrap:hover{transform:translateY(-4px)}
-  .embed-top{
-    padding:1.5rem;text-align:center;
-    background:linear-gradient(180deg,rgba(139,92,246,.1),transparent);
-  }
-  .embed-top .album{
-    width:220px;height:220px;margin:0 auto 1rem;
-    border-radius:12px;overflow:hidden;
-    box-shadow:0 20px 50px rgba(0,0,0,.6);
-    position:relative;
-  }
-  .embed-top .album img{width:100%;height:100%;object-fit:cover}
-  .embed-top h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:.3rem}
-  .embed-top p{color:var(--muted);font-size:.9rem}
-  .embed-iframe{
-    width:100%;height:420px;border:none;
-    background:#fff;
-  }
-  .platforms{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:1rem;margin-top:2.5rem;
-  }
-  .platform{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:1rem 1.2rem;border-radius:14px;
-    background:var(--surface);border:1px solid var(--border);
-    transition:all .25s;
-  }
-  .platform:hover{background:var(--surface-2);border-color:var(--accent-2);transform:translateY(-2px)}
-  .platform .name{font-weight:600;font-size:.95rem}
-  .platform .play{
-    padding:.4rem .9rem;border-radius:999px;
-    background:var(--surface-2);font-size:.8rem;font-weight:600;
-    border:1px solid var(--border);
-  }
-
-  /* CAREER */
-  .career-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:2rem;
-  }
-  .career-card{
-    background:var(--surface);border:1px solid var(--border);
-    border-radius:20px;padding:2.5rem;
-    position:relative;overflow:hidden;
-  }
-  .career-card .badge{
-    display:inline-block;padding:.4rem .9rem;border-radius:999px;
-    background:linear-gradient(135deg,rgba(244,114,182,.2),rgba(139,92,246,.2));
-    font-size:.75rem;letter-spacing:2px;text-transform:uppercase;
-    margin-bottom:1rem;color:var(--accent-2);
-  }
-  .career-card h3{font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:.8rem}
-  .career-card p{color:var(--muted)}
-  .career-card .icon-big{
-    position:absolute;top:-30px;right:-20px;
-    font-size:10rem;opacity:.05;
-  }
-
-  /* SOCIAL */
-  .social-row{
-    display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;
-  }
-  .social-link{
-    width:56px;height:56px;border-radius:50%;
-    background:var(--surface);border:1px solid var(--border);
-    display:flex;align-items:center;justify-content:center;
-    transition:all .25s;
-  }
-  .social-link:hover{
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    transform:translateY(-4px) scale(1.08);
-    border-color:transparent;
-  }
-  .social-link svg{width:22px;height:22px;fill:var(--text);transition:fill .25s}
-  .social-link:hover svg{fill:#fff}
-
-  /* FOOTER */
-  footer{
-    padding:3rem 2rem 2rem;text-align:center;
-    border-top:1px solid var(--border);
-    color:var(--muted);font-size:.9rem;
-    position:relative;z-index:1;
-  }
-  footer .heart{color:var(--accent)}
-
-  /* REVEAL */
-  .reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.2,.8,.2,1)}
-  .reveal.visible{opacity:1;transform:none}
-
-  /* RESPONSIVE */
-  @media(max-width:900px){
-    .hero-inner{grid-template-columns:1fr;text-align:center}
-    .hero-text p{margin-left:auto;margin-right:auto}
-    .cta-row{justify-content:center}
-    .hero-img{order:-1}
-    .hero-img .frame{width:280px;height:280px}
-    .career-grid{grid-template-columns:1fr}
-    .nav-links{
-      position:fixed;top:60px;left:0;right:0;
-      flex-direction:column;gap:0;
-      background:rgba(10,14,26,.98);backdrop-filter:blur(14px);
-      padding:1rem 0;
-      transform:translateY(-120%);transition:transform .3s;
-      border-bottom:1px solid var(--border);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claudio Salles — Jornalista, Músico & Videomaker</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/index.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.13/index.min.css" />
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --bg-2: #111827;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-2: rgba(255, 255, 255, 0.07);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #e8ecf4;
+      --muted: #9aa3b2;
+      --accent: #ff6b6b;
+      --accent-2: #f472b6;
+      --accent-3: #8b5cf6;
+      --gold: #fbbf24;
+      --yt-red: #ff0000;
     }
-    .nav-links.open{transform:none}
-    .nav-links li{padding:.8rem 2rem;text-align:center}
-    .menu-btn{display:block}
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.18), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(244, 114, 182, 0.15), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.08), transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* NAVEGAÇÃO */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.2rem 2rem;
+      background: rgba(10, 14, 26, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: all .3s ease;
+    }
+    nav.scrolled { padding: .8rem 2rem; background: rgba(10, 14, 26, 0.95); }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: .5px;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: .9rem; color: var(--muted);
+      transition: color .2s; position: relative;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -6px; left: 0;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width .3s;
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
+
+    /* HERO */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 8rem 2rem 4rem;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('https://image.qwenlm.ai/public_source/c5706fea-6889-4daf-b88c-403b7465c5c4/1aa4791e4-ae9a-4a9b-adfb-649a05af61ed.png');
+      background-size: cover; background-position: center;
+      opacity: .35;
+      filter: blur(2px);
+    }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 0%, var(--bg) 100%);
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1200px; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: center;
+    }
+    .hero-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1.05; font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .hero-text h1 .grad {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 50%, var(--accent-3) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-text .tag {
+      display: inline-block;
+      font-size: .85rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.5rem;
+      padding: .5rem 1rem; border: 1px solid var(--border); border-radius: 999px;
+      background: var(--surface);
+    }
+    .hero-text p {
+      font-size: 1.1rem; color: var(--muted); max-width: 500px;
+      margin-bottom: 2rem;
+    }
+    .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .9rem 1.6rem; border-radius: 999px;
+      font-weight: 600; font-size: .95rem;
+      transition: all .25s ease; cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff; box-shadow: 0 10px 30px rgba(244, 114, 182, .3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(244, 114, 182, .45); }
+    .btn-ghost {
+      background: var(--surface); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--surface-2); border-color: var(--accent-2); }
+
+    .hero-img { position: relative; display: flex; justify-content: center; }
+    .hero-img .frame {
+      position: relative; width: 380px; height: 380px; max-width: 100%;
+      border-radius: 50%;
+      padding: 6px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2), var(--accent-3));
+      animation: spin 20s linear infinite;
+      box-shadow: 0 30px 80px rgba(244, 114, 182, .25);
+    }
+    .hero-img .frame img {
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 50%;
+      animation: spin 20s linear infinite reverse;
+      border: 6px solid var(--bg);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hero-img .ring {
+      position: absolute; inset: -20px; border-radius: 50%;
+      border: 1px dashed rgba(255, 255, 255, .1);
+      animation: spin 30s linear infinite reverse;
+    }
+    .hero-img .ring::before, .hero-img .ring::after {
+      content: ''; position: absolute; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent-2); box-shadow: 0 0 20px var(--accent-2);
+    }
+    .hero-img .ring::before { top: 0; left: 50%; transform: translateX(-50%); }
+    .hero-img .ring::after { bottom: 0; left: 50%; transform: translateX(-50%); background: var(--accent-3); box-shadow: 0 0 20px var(--accent-3); }
+
+    /* SEÇÕES GERAIS */
+    section { position: relative; z-index: 1; padding: 6rem 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-head { text-align: center; margin-bottom: 4rem; }
+    .section-head .eyebrow {
+      font-size: .8rem; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--accent-2); margin-bottom: 1rem; display: block;
+    }
+    .section-head h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .section-head p { color: var(--muted); max-width: 600px; margin: 0 auto; }
+
+    /* SOBRE */
+    .about-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+    .role-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      transition: all .3s ease; position: relative; overflow: hidden;
+    }
+    .role-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+      transform: scaleX(0); transform-origin: left; transition: transform .4s;
+    }
+    .role-card:hover { transform: translateY(-6px); border-color: rgba(244, 114, 182, .3); background: var(--surface-2); }
+    .role-card:hover::before { transform: scaleX(1); }
+    .role-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(244, 114, 182, .15), rgba(139, 92, 246, .15));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin-bottom: 1.2rem;
+    }
+    .role-card h3 { font-size: 1.15rem; margin-bottom: .5rem; }
+    .role-card p { color: var(--muted); font-size: .92rem; }
+
+    /* MÚSICA */
+    .music-section {
+      background: linear-gradient(180deg, transparent, rgba(139, 92, 246, .05), transparent);
+    }
+    .embed-wrap {
+      max-width: 480px; margin: 0 auto;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 24px; overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .5);
+      transition: transform .4s;
+    }
+    .embed-wrap:hover { transform: translateY(-4px); }
+    .embed-top {
+      padding: 1.5rem; text-align: center;
+      background: linear-gradient(180deg, rgba(139, 92, 246, .1), transparent);
+    }
+    .embed-top .album {
+      width: 220px; height: 220px; margin: 0 auto 1rem;
+      border-radius: 12px; overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .6);
+      position: relative;
+    }
+    .embed-top .album img { width: 100%; height: 100%; object-fit: cover; }
+    .embed-top h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: .3rem; }
+    .embed-top p { color: var(--muted); font-size: .9rem; }
+    .embed-iframe { width: 100%; height: 420px; border: none; background: #fff; }
+    
+    .platforms {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem; margin-top: 2.5rem;
+    }
+    .platform {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.2rem; border-radius: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      transition: all .25s;
+    }
+    .platform:hover { background: var(--surface-2); border-color: var(--accent-2); transform: translateY(-2px); }
+    .platform .name { font-weight: 600; font-size: .95rem; }
+    .platform .play {
+      padding: .4rem .9rem; border-radius: 999px;
+      background: var(--surface-2); font-size: .8rem; font-weight: 600;
+      border: 1px solid var(--border);
+    }
+
+    /* CARREIRA */
+    .career-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .career-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2.5rem;
+      position: relative; overflow: hidden;
+    }
+    .career-card .badge {
+      display: inline-block; padding: .4rem .9rem; border-radius: 999px;
+      background: linear-gradient(135deg, rgba(244, 114, 182, .2), rgba(139, 92, 246, .2));
+      font-size: .75rem; letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 1rem; color: var(--accent-2);
+    }
+    .career-card h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: .8rem; }
+    .career-card p { color: var(--muted); }
+    .career-card .icon-big {
+      position: absolute; top: -30px; right: -20px;
+      font-size: 10rem; opacity: .05;
+    }
+
+    /* SEÇÃO REDESENHADA DE VÍDEOS (YOUTUBE) */
+    .videos-section {
+      background: linear-gradient(180deg, transparent, rgba(255, 0, 0, 0.03), transparent);
+    }
+    .yt-section-title {
+      display: flex; align-items: center; justify-content: center; gap: .75rem;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-weight: 800; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 2.5rem;
+    }
+    .yt-section-title .yt-icon-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 42px; height: 42px; border-radius: 12px;
+      background: rgba(255, 0, 0, 0.15); border: 1px solid rgba(255, 0, 0, 0.3);
+      color: #ff4d4d;
+    }
+
+    /* VÍDEO PRINCIPAL (HERO DESTAQUE) */
+    .yt-hero-card {
+      max-width: 960px; margin: 0 auto 3.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px; overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 0, 0, 0.08);
+      transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+    }
+    .yt-hero-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 107, 107, 0.35);
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6), 0 0 50px rgba(255, 107, 107, 0.15);
+    }
+    .yt-hero-media {
+      position: relative; width: 100%; padding-top: 52%;
+      background: #000; overflow: hidden;
+    }
+    .yt-hero-media iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+    }
+    .yt-hero-content {
+      padding: 1.8rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem; flex-wrap: wrap;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.2) 100%);
+      border-top: 1px solid var(--border);
+    }
+    .yt-hero-info { flex: 1; min-width: 280px; }
+    .yt-hero-info h3 {
+      font-size: 1.35rem; font-weight: 700; margin-bottom: .4rem;
+      color: #ffffff;
+    }
+    .yt-hero-info p { color: var(--muted); font-size: .92rem; }
+    .yt-hero-action .btn-yt-hero {
+      padding: .85rem 1.6rem; border-radius: 999px;
+      background: linear-gradient(135deg, #e55353, #d93838);
+      color: #fff; font-weight: 700; font-size: .85rem; letter-spacing: .8px;
+      text-transform: uppercase; border: none;
+      display: inline-flex; align-items: center; gap: .6rem;
+      box-shadow: 0 10px 25px rgba(229, 83, 83, 0.35);
+      transition: all .25s ease;
+    }
+    .yt-hero-action .btn-yt-hero:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 30px rgba(229, 83, 83, 0.5);
+      background: linear-gradient(135deg, #ff6b6b, #e53935);
+    }
+
+    /* SUBTÍTULO DA GRID */
+    .yt-subhead {
+      font-size: .85rem; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 1.8rem; display: flex; align-items: center; gap: .8rem;
+    }
+    .yt-subhead::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* GRID DE VÍDEOS SECUNDÁRIOS */
+    .yt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.8rem;
+    }
+    .yt-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: all .3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      position: relative;
+    }
+    .yt-card:hover {
+      transform: translateY(-6px);
+      background: var(--surface-2);
+      border-color: rgba(255, 107, 107, 0.3);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 0, 0, 0.1);
+    }
+    .yt-card-media {
+      position: relative; width: 100%; padding-top: 56.25%;
+      background: #000; overflow: hidden;
+    }
+    .yt-card-media iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+    }
+    .yt-card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      flex: 1;
+    }
+    .yt-card-title {
+      font-size: 1.05rem; font-weight: 700; color: #fff;
+      line-height: 1.35; margin-bottom: .4rem;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .yt-card-subtitle {
+      font-size: .85rem; color: var(--muted); margin-bottom: 1rem;
+    }
+    .yt-card-tags {
+      display: flex; flex-wrap: wrap; gap: .5rem; margin-top: auto;
+    }
+    .yt-tag {
+      padding: .25rem .7rem; border-radius: 999px;
+      font-size: .72rem; font-weight: 600;
+      background: rgba(255, 255, 255, 0.06);
+      color: #d1d5db; border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all .2s;
+    }
+    .yt-card:hover .yt-tag {
+      background: rgba(255, 107, 107, 0.12);
+      color: #ff8e8e; border-color: rgba(255, 107, 107, 0.25);
+    }
+
+    /* BOTÃO DO CANAL */
+    .yt-footer-btn {
+      text-align: center; margin-top: 3.5rem;
+    }
+    .btn-channel {
+      display: inline-flex; align-items: center; gap: .7rem;
+      padding: .9rem 2.2rem; border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff; font-weight: 600; font-size: .92rem;
+      backdrop-filter: blur(8px);
+      transition: all .3s ease;
+    }
+    .btn-channel:hover {
+      background: rgba(255, 0, 0, 0.15);
+      border-color: rgba(255, 0, 0, 0.4);
+      color: #fff; transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(255, 0, 0, 0.25);
+    }
+    .btn-channel svg { fill: #ff4d4d; width: 22px; height: 22px; transition: transform .3s; }
+    .btn-channel:hover svg { transform: scale(1.15); }
+
+    /* CONTATO & SOCIAL */
+    .social-row { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .social-link {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      transition: all .25s;
+    }
+    .social-link:hover {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      transform: translateY(-4px) scale(1.08);
+      border-color: transparent;
+    }
+    .social-link svg { width: 22px; height: 22px; fill: var(--text); transition: fill .25s; }
+    .social-link:hover svg { fill: #fff; }
+
+    /* RODAPÉ */
+    footer {
+      padding: 3rem 2rem 2rem; text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--muted); font-size: .9rem;
+      position: relative; z-index: 1;
+    }
+    footer .heart { color: var(--accent); }
+
+    /* REVEAL ANIMATION */
+    .reveal { opacity: 0; transform: translateY(30px); transition: all .8s cubic-bezier(.2, .8, .2, 1); }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVIDADE */
+    @media(max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-text p { margin-left: auto; margin-right: auto; }
+      .cta-row { justify-content: center; }
+      .hero-img { order: -1; }
+      .hero-img .frame { width: 280px; height: 280px; }
+      .career-grid { grid-template-columns: 1fr; }
+      .nav-links {
+        position: fixed; top: 60px; left: 0; right: 0;
+        flex-direction: column; gap: 0;
+        background: rgba(10, 14, 26, .98); backdrop-filter: blur(14px);
+        padding: 1rem 0;
+        transform: translateY(-120%); transition: transform .3s;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links.open { transform: none; }
+      .nav-links li { padding: .8rem 2rem; text-align: center; }
+      .menu-btn { display: block; }
+      .yt-hero-content { flex-direction: column; text-align: center; }
+      .yt-hero-action { width: 100%; display: flex; justify-content: center; }
+    }
+
+    /* MÚSICA / CARD DE LANÇAMENTO REDESENHADO */
+.music-section {
+  background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.08), transparent);
+}
+
+.music-card-featured {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 2.5rem;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(244, 114, 182, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.35s ease, border-color 0.35s ease;
+}
+
+.music-card-featured:hover {
+  transform: translateY(-4px);
+  border-color: rgba(244, 114, 182, 0.3);
+}
+
+/* Capa e Efeito de Vinil */
+.album-cover-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.album-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  transition: transform 0.4s ease;
+}
+
+.vinyl-disc {
+  position: absolute;
+  width: 95%;
+  height: 95%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    #111,
+    #111 2px,
+    #222 3px,
+    #111 4px
+  );
+  border: 4px solid #000;
+  z-index: 1;
+  right: 0;
+  transition: transform 0.5s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.vinyl-disc::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #fff;
+}
+
+.music-card-featured:hover .album-img {
+  transform: translateX(-15px);
+}
+
+.music-card-featured:hover .vinyl-disc {
+  transform: translateX(35px) rotate(180deg);
+}
+
+/* Informações da Música */
+.music-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.music-badge {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  background: rgba(244, 114, 182, 0.12);
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(244, 114, 182, 0.25);
+  margin-bottom: 1rem;
+}
+
+.music-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.25;
+  margin-bottom: 0.4rem;
+}
+
+.music-artist {
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-smart-link {
+  width: 100%;
+  justify-content: center;
+  padding: 0.95rem 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+/* Grid de Plataformas */
+.platform-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  width: 100%;
+}
+
+.platform-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  transition: all 0.25s ease;
+}
+
+.platform-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--accent-2);
+  transform: translateY(-2px);
+}
+
+/* Ajustes Responsivos */
+@media (max-width: 768px) {
+  .music-card-featured {
+    grid-template-columns: 1fr;
+    padding: 1.8rem;
+    gap: 2rem;
   }
-</style>
+
+  .album-cover-wrap {
+    max-width: 240px;
+    margin: 0 auto;
+  }
+
+  .music-info {
+    align-items: center;
+    text-align: center;
+  }
+
+  .platform-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+  </style>
 </head>
 <body>
 
-<nav id="nav">
-  <div class="nav-inner">
-    <a href="#" class="logo">Claudio Salles</a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#sobre">Sobre</a></li>
-      <li><a href="#musica">Música</a></li>
-      <li><a href="#carreira">Carreira</a></li>
-      <li><a href="#contato">Contato</a></li>
-    </ul>
-    <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
-  </div>
-</nav>
+  <!-- BARRA DE NAVEGAÇÃO -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo">Claudio Salles</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#musica">Música</a></li>
+        <li><a href="#carreira">Carreira</a></li>
+        <li><a href="#videos">Vídeos</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+    </div>
+  </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-inner">
-    <div class="hero-text reveal">
-      <span class="tag">Jornalista • Músico • Videomaker • IA</span>
-      <h1>Claudio <span class="grad">Salles</span></h1>
-      <p>Combinando jornalismo, música e tecnologia. Especialista em Inteligência Artificial, criador de conteúdo e apaixonado por contar histórias em múltiplas plataformas.</p>
-      <div class="cta-row">
-        <a href="#musica" class="btn btn-primary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          Ouvir agora
-        </a>
-        <a href="#sobre" class="btn btn-ghost">Conhecer mais</a>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-text reveal">
+        <span class="tag">Jornalista • Músico • Videomaker • IA</span>
+        <h1>Claudio <span class="grad">Salles</span></h1>
+        <p>Combinando jornalismo, música e tecnologia. Especialista em Inteligência Artificial, criador de conteúdo e apaixonado por contar histórias em múltiplas plataformas.</p>
+        <div class="cta-row">
+          <a href="#musica" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Ouvir agora
+          </a>
+          <a href="#sobre" class="btn btn-ghost">Conhecer mais</a>
+        </div>
+      </div>
+      <div class="hero-img reveal">
+        <div class="ring"></div>
+        <div class="frame">
+          <img src="channels4_profile.jpg" alt="Claudio Salles" />
+        </div>
       </div>
     </div>
-    <div class="hero-img reveal">
-      <div class="ring"></div>
-      <div class="frame">
-        <img src="foto-perfil.jpg" alt="Claudio Salles" />
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- SOBRE -->
-<section id="sobre">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">Sobre</span>
-      <h2>Múltiplas paixões, uma só voz</h2>
-      <p>Uma trajetória construída entre a notícia, a melodia e a imagem.</p>
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Sobre</span>
+        <h2>Múltiplas paixões, uma só voz</h2>
+        <p>Uma trajetória construída entre a notícia, a melodia e a imagem.</p>
+      </div>
+      <div class="about-grid">
+        <div class="role-card reveal">
+          <div class="role-icon">🎙️</div>
+          <h3>Jornalista</h3>
+          <p>Comunicador nato, transforma informação em narrativa envolvente e relevante.</p>
+        </div>
+        <div class="role-card reveal">
+          <div class="role-icon">🎸</div>
+          <h3>Músico</h3>
+          <p>Compositor e intérprete, cria canções que tocam a alma e contam histórias.</p>
+        </div>
+        <div class="role-card reveal">
+          <div class="role-icon">🎬</div>
+          <h3>Videomaker</h3>
+          <p>Conteúdo audiovisual com olhar cinematográfico e narrativa visual apurada.</p>
+        </div>
+        <div class="role-card reveal">
+          <div class="role-icon">🤖</div>
+          <h3>Especialista em IA</h3>
+          <p>Explora as fronteiras da inteligência artificial aplicada à criação e comunicação.</p>
+        </div>
+      </div>
     </div>
-    <div class="about-grid">
-      <div class="role-card reveal">
-        <div class="role-icon">🎙️</div>
-        <h3>Jornalista</h3>
-        <p>Comunicador nato, transforma informação em narrativa envolvente e relevante.</p>
-      </div>
-      <div class="role-card reveal">
-        <div class="role-icon"></div>
-        <h3>Músico</h3>
-        <p>Compositor e intérprete, cria canções que tocam a alma e contam histórias.</p>
-      </div>
-      <div class="role-card reveal">
-        <div class="role-icon">🎬</div>
-        <h3>Videomaker</h3>
-        <p>Conteúdo audiovisual com olhar cinematográfico e narrativa visual apurada.</p>
-      </div>
-      <div class="role-card reveal">
-        <div class="role-icon">🤖</div>
-        <h3>Especialista em IA</h3>
-        <p>Explora as fronteiras da inteligência artificial aplicada à criação e comunicação.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- MÚSICA / EMBED -->
+  <!-- MÚSICA / LANÇAMENTO -->
 <section id="musica" class="music-section">
   <div class="container">
     <div class="section-head reveal">
-      <span class="eyebrow">Lançamento</span>
+      <span class="eyebrow">Lançamento Oficial</span>
       <h2>A Felicidade é Guardada pelos Cães</h2>
       <p>Ouça agora em todas as plataformas digitais.</p>
     </div>
 
-    <div class="embed-wrap reveal">
-      <div class="embed-top">
-        <div class="album">
-          <img src="https://image.qwenlm.ai/public_source/c5706fea-6889-4daf-b88c-403b7465c5c4/1aa4791e4-ae9a-4a9b-adfb-649a05af61ed.png" alt="A Felicidade é Guardada pelos Cães" />
+    <div class="music-card-featured reveal">
+      <!-- Capa com efeito de Vinil no Hover -->
+      <div class="album-cover-wrap">
+        <div class="vinyl-disc"></div>
+        <img 
+          src="https://image.qwenlm.ai/public_source/c5706fea-6889-4daf-b88c-403b7465c5c4/1aa4791e4-ae9a-4a9b-adfb-649a05af61ed.png" 
+          alt="Capa do Single - A Felicidade é Guardada pelos Cães" 
+          class="album-img" 
+        />
+      </div>
+
+      <!-- Informações do Single -->
+      <div class="music-info">
+        <span class="music-badge">Single • 2026</span>
+        <h3 class="music-title">A Felicidade (É Guardada pelos Cães)</h3>
+        <p class="music-artist">Claudio Salles</p>
+
+        <!-- Botão de Ação Principal -->
+        <a href="https://offstep.link/199005019499" target="_blank" rel="noopener" class="btn btn-primary btn-smart-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          Escolher Plataforma de Streaming
+        </a>
+
+        <!-- Grid de Botões Rápidos -->
+        <div class="platform-grid">
+          <a href="https://offstep.link/199005019499" target="_blank" rel="noopener" class="platform-btn">
+            <span class="icon">🎵</span> Spotify
+          </a>
+          <a href="https://offstep.link/199005019499" target="_blank" rel="noopener" class="platform-btn">
+            <span class="icon">🍎</span> Apple Music
+          </a>
+          <a href="https://offstep.link/199005019499" target="_blank" rel="noopener" class="platform-btn">
+            <span class="icon">💜</span> Deezer
+          </a>
+          <a href="https://offstep.link/199005019499" target="_blank" rel="noopener" class="platform-btn">
+            <span class="icon">⚫</span> Tidal
+          </a>
+          <a href="https://www.youtube.com/@ClaudioSalles" target="_blank" rel="noopener" class="platform-btn">
+            <span class="icon">▶️</span> YouTube
+          </a>
+          <a href="https://offstep.link/199005019499" target="_blank" rel="noopener" class="platform-btn">
+            <span class="icon">📻</span> Rádio Pop
+          </a>
         </div>
-        <h3>A Felicidade (É Guardada pelos Cães)</h3>
-        <p>Claudio Salles</p>
-      </div>
-      <iframe
-        class="embed-iframe"
-        src="https://offstep.link/199005019499"
-        title="Claudio Salles - A Felicidade é Guardada pelos Cães"
-        loading="lazy"
-        allow="autoplay; encrypted-media"
-        allowfullscreen></iframe>
-    </div>
-
-    <div class="platforms reveal">
-      <a href="#" class="platform"><span class="name"> Spotify</span><span class="play">Reproduzir</span></a>
-      <a href="#" class="platform"><span class="name">🍎 Apple Music</span><span class="play">Reproduzir</span></a>
-      <a href="#" class="platform"><span class="name">💜 Deezer</span><span class="play">Reproduzir</span></a>
-      <a href="#" class="platform"><span class="name">⚫ Tidal</span><span class="play">Reproduzir</span></a>
-      <a href="#" class="platform"><span class="name">▶️ YouTube</span><span class="play">Assistir</span></a>
-      <a href="#" class="platform"><span class="name"> Rádio</span><span class="play">Sintonizar</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- CARREIRA -->
-<section id="carreira">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">Trajetória</span>
-      <h2>Onde a música encontra a ciência</h2>
-      <p>Projetos e parcerias que marcam a carreira.</p>
-    </div>
-    <div class="career-grid">
-      <div class="career-card reveal">
-        <span class="icon-big">🔬</span>
-        <span class="badge">Pesquisa & Inovação</span>
-        <h3>LEMI / INCT INEAC</h3>
-        <p>Vinculado ao Laboratório de Estudos de Mídia e Inovação, contribuindo para pesquisas na intersecção entre comunicação, tecnologia e cultura.</p>
-      </div>
-      <div class="career-card reveal">
-        <span class="icon-big">📻</span>
-        <span class="badge">Rádio & Mídia</span>
-        <h3>Rádio Pop Goiaia</h3>
-        <p>Presença constante na programação, levando música autoral, entrevistas e conteúdo cultural para ouvintes de todo o Brasil.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTATO / SOCIAL -->
-<section id="contato">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">Conecte-se</span>
-      <h2>Vamos conversar</h2>
-      <p>Siga nas redes sociais e acompanhe os próximos lançamentos.</p>
+  <!-- CARREIRA -->
+  <section id="carreira">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Trajetória</span>
+        <h2>Onde a música encontra a ciência</h2>
+        <p>Projetos e parcerias que marcam a carreira.</p>
+      </div>
+      <div class="career-grid">
+        <div class="career-card reveal">
+          <span class="icon-big">🔬</span>
+          <span class="badge">Pesquisa & Inovação</span>
+          <h3>LEMI / INCT INEAC</h3>
+          <p>Vinculado ao Laboratório de Estudos de Mídia e Inovação, contribuindo para pesquisas na intersecção entre comunicação, tecnologia e cultura.</p>
+        </div>
+        <div class="career-card reveal">
+          <span class="icon-big">📻</span>
+          <span class="badge">Rádio & Mídia</span>
+          <h3>Rádio Pop Goiaia</h3>
+          <p>Presença constante na programação, levando música autoral, entrevistas e conteúdo cultural para ouvintes de todo o Brasil.</p>
+        </div>
+      </div>
     </div>
-    <div class="social-row reveal">
-      <a href="https://www.instagram.com/salles.claudio/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
-        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.9.9 1.4.2.4.4 1.1.4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.9.7-1.4.9-.4.2-1.1.4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.9-.9-1.4-.2-.4-.4-1.1-.4-2.2-.1-1.3-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.9-.7 1.4-.9.4-.2 1.1-.4 2.2-.4 1.3-.1 1.6-.1 4.8-.1M12 0C8.7 0 8.3 0 7.1.1 5.8.1 5 .3 4.2.6c-.8.3-1.5.7-2.2 1.4C1.3 2.7.9 3.4.6 4.2.3 5 .1 5.8.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.1 1.3.2 2.1.5 2.9.3.8.7 1.5 1.4 2.2.7.7 1.4 1.1 2.2 1.4.8.3 1.6.5 2.9.5C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c1.3-.1 2.1-.2 2.9-.5.8-.3 1.5-.7 2.2-1.4.7-.7 1.1-1.4 1.4-2.2.3-.8.5-1.6.5-2.9.1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.1-1.3-.2-2.1-.5-2.9-.3-.8-.7-1.5-1.4-2.2C21.3 1.3 20.6.9 19.8.6 19 .3 18.2.1 16.9.1 15.7 0 15.3 0 12 0zm0 5.8A6.2 6.2 0 1 0 18.2 12 6.2 6.2 0 0 0 12 5.8zm0 10.2A4 4 0 1 1 16 12a4 4 0 0 1-4 4zm6.4-11.8a1.4 1.4 0 1 0 1.4 1.4 1.4 1.4 0 0 0-1.4-1.4z"/></svg>
-      </a>
-      <a href="https://www.facebook.com/csalles40" target="_blank" rel="noopener" class="social-link" aria-label="Facebook">
-        <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H8v-2.9h2.4V9.8c0-2.4 1.4-3.7 3.6-3.7 1 0 2.1.2 2.1.2v2.3h-1.2c-1.2 0-1.5.7-1.5 1.5V12h2.6l-.4 2.9h-2.2v7A10 10 0 0 0 22 12z"/></svg>
-      </a>
-      <a href="#" class="social-link" aria-label="Spotify">
-        <svg viewBox="0 0 24 24"><path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm5.5 17.3c-.2.3-.6.4-.9.2-2.5-1.5-5.6-1.9-9.3-1-.4.1-.7-.1-.8-.5-.1-.4.1-.7.5-.8 4-.9 7.5-.5 10.3 1.2.3.2.4.6.2.9zm1.3-2.8c-.2.4-.7.5-1.1.3-2.8-1.7-7.1-2.2-10.4-1.2-.4.1-.9-.1-1-.5-.1-.4.1-.9.5-1 3.8-1.1 8.5-.6 11.7 1.4.4.2.5.7.3 1zm.1-2.9c-3.4-2-9-2.2-12.3-1.2-.5.2-1.1-.1-1.2-.6-.2-.5.1-1.1.6-1.2 3.8-1.1 10-.9 13.9 1.4.5.3.6.9.4 1.4-.3.4-.9.5-1.4.2z"/></svg>
-      </a>
-      <a href="#" class="social-link" aria-label="YouTube">
-        <svg viewBox="0 0 24 24"><path d="M23.5 6.2c-.3-1-1-1.8-2-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.5.6c-1 .3-1.7 1.1-2 2.1C0 8.1 0 12 0 12s0 3.9.5 5.8c.3 1 1 1.8 2 2.1 1.9.6 9.5.6 9.5.6s7.6 0 9.5-.6c1-.3 1.7-1.1 2-2.1.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
-      </a>
-      <a href="#" class="social-link" aria-label="Email">
-        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+  </section>
+
+  <!-- SEÇÃO DE VÍDEOS REDESENHADA (YOUTUBE) -->
+  <section id="videos" class="videos-section">
+    <div class="container">
+
+      <!-- Título da Seção -->
+      <h2 class="yt-section-title reveal">
+        <span class="yt-icon-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </span>
+        Explore os Vídeos de Claudio Salles ♫
+      </h2>
+
+     <!-- Vídeo Destaque (Hero) -->
+<div class="yt-hero-card reveal">
+  <div class="yt-hero-media">
+    <iframe
+      src="https://www.youtube.com/embed/J7CIxRGlL8c"
+      title="CLAUDIO SALLES - SABE COM QUEM ESTÁ FALANDO ?"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      loading="lazy"></iframe>
+  </div>
+  <div class="yt-hero-content">
+    <div class="yt-hero-info">
+      <h3>CLAUDIO SALLES - SABE COM QUEM ESTÁ FALANDO ?</h3>
+      <p>Acompanhe os últimos lançamentos, clipes e entrevistas no canal oficial do YouTube.</p>
+    </div>
+    <div class="yt-hero-action">
+      <a href="https://www.youtube.com/watch?v=J7CIxRGlL8c" target="_blank" rel="noopener" class="btn-yt-hero">
+        Ver Clipe Completo
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
   </div>
-</section>
+</div>
 
-<footer>
-  <p>© 2026 Claudio Salles • Feito com <span class="heart">♥</span> e um pouco de IA</p>
-  <p style="margin-top:.5rem;font-size:.8rem">Jornalista • Músico • Videomaker • Especialista em IA</p>
-</footer>
+      <!-- Subtítulo para Outros Vídeos -->
+      <div class="yt-subhead reveal">
+        Destaques do Canal
+      </div>
 
-<script>
-  // Nav scroll
-  const nav=document.getElementById('nav');
-  window.addEventListener('scroll',()=>{
-    nav.classList.toggle('scrolled',window.scrollY>30);
-  });
+      <!-- Grid de Vídeos Secundários -->
+      <div class="yt-grid">
+        
+        <!-- Vídeo 1 -->
+        <div class="yt-card reveal">
+          <div class="yt-card-media">
+            <iframe
+              src="https://www.youtube.com/embed/v9yob0jnETg"
+              title="Tribo de Jah"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"></iframe>
+          </div>
+          <div class="yt-card-body">
+            <div>
+              <h4 class="yt-card-title">Tribo de Jah</h4>
+              <p class="yt-card-subtitle">Música de Claudio Salles</p>
+            </div>
+            <div class="yt-card-tags">
+              <span class="yt-tag">Música</span>
+            </div>
+          </div>
+        </div>
 
-  // Mobile menu
-  const menuBtn=document.getElementById('menuBtn');
-  const navLinks=document.getElementById('navLinks');
-  menuBtn.addEventListener('click',()=>navLinks.classList.toggle('open'));
-  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
+        <!-- Vídeo 2 -->
+        <div class="yt-card reveal">
+          <div class="yt-card-media">
+            <iframe
+              src="https://www.youtube.com/embed/J7CIxRGlL8c"
+              title="Sabe Com Quem Está Falando?"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"></iframe>
+          </div>
+          <div class="yt-card-body">
+            <div>
+              <h4 class="yt-card-title">Sabe Com Quem Está Falando?</h4>
+              <p class="yt-card-subtitle">Videoclipe Oficial</p>
+            </div>
+            <div class="yt-card-tags">
+              <span class="yt-tag">Videoclipe</span>
+              <span class="yt-tag">Música</span>
+            </div>
+          </div>
+        </div>
 
-  // Reveal on scroll
-  const io=new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
-  },{threshold:.12});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-</script>
+        <!-- Vídeo 3 -->
+        <div class="yt-card reveal">
+          <div class="yt-card-media">
+            <iframe
+              src="https://www.youtube.com/embed/1ZYK9h7_LAw"
+              title="Feel Alone"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"></iframe>
+          </div>
+          <div class="yt-card-body">
+            <div>
+              <h4 class="yt-card-title">Feel Alone</h4>
+              <p class="yt-card-subtitle">Música e Clipe Oficial</p>
+            </div>
+            <div class="yt-card-tags">
+              <span class="yt-tag">Música</span>
+              <span class="yt-tag">Single</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vídeo 4 -->
+        <div class="yt-card reveal">
+          <div class="yt-card-media">
+            <iframe
+              src="https://www.youtube.com/embed/BTxnnCFWkjo"
+              title="Entrevista Juíza Patrícia Acioli"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"></iframe>
+          </div>
+          <div class="yt-card-body">
+            <div>
+              <h4 class="yt-card-title">Entrevista Juíza Patrícia Acioli</h4>
+              <p class="yt-card-subtitle">Jornalismo e Entrevista Especial</p>
+            </div>
+            <div class="yt-card-tags">
+              <span class="yt-tag">Jornalismo</span>
+              <span class="yt-tag">Entrevista</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vídeo 5 -->
+        <div class="yt-card reveal">
+          <div class="yt-card-media">
+            <iframe
+              src="https://www.youtube.com/embed/3HAtrEZ8N1U"
+              title="Essa Menina"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"></iframe>
+          </div>
+          <div class="yt-card-body">
+            <div>
+              <h4 class="yt-card-title">Essa Menina</h4>
+              <p class="yt-card-subtitle">Videoclipe Oficial</p>
+            </div>
+            <div class="yt-card-tags">
+              <span class="yt-tag">Videoclipe</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vídeo 6 -->
+        <div class="yt-card reveal">
+          <div class="yt-card-media">
+            <iframe
+              src="https://www.youtube.com/embed/FN0M9ei_hQY"
+              title="Perfil VQQ"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"></iframe>
+          </div>
+          <div class="yt-card-body">
+            <div>
+              <h4 class="yt-card-title">Perfil VQQ</h4>
+              <p class="yt-card-subtitle">Documentário / Perfil Artístico</p>
+            </div>
+            <div class="yt-card-tags">
+              <span class="yt-tag">Documentário</span>
+              <span class="yt-tag">Bastidores</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Botão Direcionando ao Canal -->
+      <div class="yt-footer-btn reveal">
+        <a href="https://www.youtube.com/channel/UCB0uWT81rhqTw1TIccSo8bQ" target="_blank" rel="noopener" class="btn-channel">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          Ver Todos No YouTube
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTATO / SOCIAL -->
+  <section id="contato">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Conecte-se</span>
+        <h2>Vamos conversar</h2>
+        <p>Siga nas redes sociais e acompanhe os próximos lançamentos.</p>
+      </div>
+      <div class="social-row reveal">
+        <a href="https://www.instagram.com/salles.claudio/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.9.9 1.4.2.4.4 1.1.4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.9.7-1.4.9-.4.2-1.1.4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.9-.9-1.4-.2-.4-.4-1.1-.4-2.2-.1-1.3-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.9-.7 1.4-.9.4-.2 1.1-.4 2.2-.4 1.3-.1 1.6-.1 4.8-.1M12 0C8.7 0 8.3 0 7.1.1 5.8.1 5 .3 4.2.6c-.8.3-1.5.7-2.2 1.4C1.3 2.7.9 3.4.6 4.2.3 5 .1 5.8.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.1 1.3.2 2.1.5 2.9.3.8.7 1.5 1.4 2.2.7.7 1.4 1.1 2.2 1.4.8.3 1.6.5 2.9.5C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c1.3-.1 2.1-.2 2.9-.5.8-.3 1.5-.7 2.2-1.4.7-.7 1.1-1.4 1.4-2.2.3-.8.5-1.6.5-2.9.1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.1-1.3-.2-2.1-.5-2.9-.3-.8-.7-1.5-1.4-2.2C21.3 1.3 20.6.9 19.8.6 19 .3 18.2.1 16.9.1 15.7 0 15.3 0 12 0zm0 5.8A6.2 6.2 0 1 0 18.2 12 6.2 6.2 0 0 0 12 5.8zm0 10.2A4 4 0 1 1 16 12a4 4 0 0 1-4 4zm6.4-11.8a1.4 1.4 0 1 0 1.4 1.4 1.4 1.4 0 0 0-1.4-1.4z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/csalles40" target="_blank" rel="noopener" class="social-link" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H8v-2.9h2.4V9.8c0-2.4 1.4-3.7 3.6-3.7 1 0 2.1.2 2.1.2v2.3h-1.2c-1.2 0-1.5.7-1.5 1.5V12h2.6l-.4 2.9h-2.2v7A10 10 0 0 0 22 12z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@ClaudioSalles" target="_blank" rel="noopener" class="social-link" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M23.5 6.2c-.3-1-1-1.8-2-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.5.6c-1 .3-1.7 1.1-2 2.1C0 8.1 0 12 0 12s0 3.9.5 5.8c.3 1 1 1.8 2 2.1 1.9.6 9.5.6 9.5.6s7.6 0 9.5-.6c1-.3 1.7-1.1 2-2.1.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+        </a>
+        <a href="#" class="social-link" aria-label="Spotify">
+          <svg viewBox="0 0 24 24"><path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm5.5 17.3c-.2.3-.6.4-.9.2-2.5-1.5-5.6-1.9-9.3-1-.4.1-.7-.1-.8-.5-.1-.4.1-.7.5-.8 4-.9 7.5-.5 10.3 1.2.3.2.4.6.2.9zm1.3-2.8c-.2.4-.7.5-1.1.3-2.8-1.7-7.1-2.2-10.4-1.2-.4.1-.9-.1-1-.5-.1-.4.1-.9.5-1 3.8-1.1 8.5-.6 11.7 1.4.4.2.5.7.3 1zm.1-2.9c-3.4-2-9-2.2-12.3-1.2-.5.2-1.1-.1-1.2-.6-.2-.5.1-1.1.6-1.2 3.8-1.1 10-.9 13.9 1.4.5.3.6.9.4 1.4-.3.4-.9.5-1.4.2z"/></svg>
+        </a>
+        <a href="#" class="social-link" aria-label="Email">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RODAPÉ -->
+  <footer>
+    <p>© 2026 Claudio Salles • Feito com <span class="heart">♥</span> e um pouco de IA</p>
+    <p style="margin-top:.5rem;font-size:.8rem">Jornalista • Músico • Videomaker • Especialista em IA</p>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Transição do Navegador ao Rolar
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 30);
+    });
+
+    // Menu Mobile Toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    // Animação de Revelação ao Rolar a Página (Intersection Observer)
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
 </body>
 </html>
