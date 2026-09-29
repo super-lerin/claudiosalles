@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rádio Pop Goiaia - Claudio Salles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .player-controls button:hover {
+            transform: scale(1.1);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(to right, #ff6b6b, #ee5a6f);
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff6b6b;
+            cursor: pointer;
+        }
+        
+        .album-art {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .track-list li:hover {
+            background: rgba(255, 107, 107, 0.1);
+        }
+        
+        .equalizer {
+            display: flex;
+            align-items: end;
+            gap: 2px;
+            height: 20px;
+        }
+        
+        .equalizer-bar {
+            width: 3px;
+            background: #ff6b6b;
+            animation: equalize 1s ease-in-out infinite;
+        }
+        
+        .equalizer-bar:nth-child(1) { animation-delay: 0s; height: 60%; }
+        .equalizer-bar:nth-child(2) { animation-delay: 0.2s; height: 80%; }
+        .equalizer-bar:nth-child(3) { animation-delay: 0.4s; height: 40%; }
+        .equalizer-bar:nth-child(4) { animation-delay: 0.6s; height: 70%; }
+        .equalizer-bar:nth-child(5) { animation-delay: 0.8s; height: 50%; }
+        
+        @keyframes equalize {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
+        }
+        
+        .playing .equalizer-bar {
+            animation-play-state: running;
+        }
+        
+        .paused .equalizer-bar {
+            animation-play-state: paused;
+        }
+        
+        .text-primary {
+            color: #ff6b6b;
+        }
+        
+        .bg-primary {
+            background-color: #ff6b6b;
+        }
+        
+        .border-primary {
+            border-color: #ff6b6b;
+        }
+        
+        .hover\:bg-primary-dark:hover {
+            background-color: #e55a5a;
+        }
+        
+        .hover\:text-primary:hover {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg p-4 shadow-lg">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                    <i class="fas fa-broadcast-tower text-red-500 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold">Rádio Pop Goiaia</h1>
+                    <p class="text-sm opacity-80">Jornalista • Músico • Videomaker • IA</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#radio" class="hover:text-red-200 transition">Rádio</a>
+                <a href="#playlist" class="hover:text-red-200 transition">Playlist</a>
+                <a href="#about" class="hover:text-red-200 transition">Sobre</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4 pb-32">
+        <!-- Radio Player Section -->
+        <section id="radio" class="mb-8">
+            <div class="glass-effect rounded-2xl p-6 md:p-8">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <!-- Album Art & Info -->
+                    <div class="text-center md:text-left">
+                        <div class="relative mb-6">
+                            <img 
+                                src="https://image.qwenlm.ai/public_source/c5706fea-6889-4daf-b88c-403b7465c5c4/1aa4791e4-ae9a-4a9b-adfb-649a05af61ed.png" 
+                                alt="A Felicidade é Guardada pelos Cães" 
+                                class="album-art w-64 h-64 mx-auto md:mx-0 rounded-2xl shadow-2xl object-cover"
+                            >
+                            <div class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold animate-pulse">
+                                AO VIVO
+                            </div>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold mb-2">A Felicidade (É Guardada pelos Cães)</h2>
+                        <p class="text-gray-300 text-lg">Claudio Salles</p>
+                        <p class="text-gray-400 mt-2">Single • 2026</p>
+                    </div>
+
+                    <!-- Player Controls -->
+                    <div class="space-y-6">
+                        <!-- Progress Bar -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm text-gray-400">
+                                <span id="currentTime">0:00</span>
+                                <span id="duration">3:45</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2 cursor-pointer" id="progressBar">
+                                <div class="progress-bar h-2 rounded-full transition-all duration-300" style="width: 0%" id="progressFill"></div>
+                            </div>
+                        </div>
+
+                        <!-- Controls -->
+                        <div class="player-controls flex items-center justify-center space-x-6">
+                            <button onclick="previousTrack()" class="text-gray-400 hover:text-white transition p-2">
+                                <i class="fas fa-step-backward text-xl"></i>
+                            </button>
+                            <button onclick="togglePlay()" id="playButton" class="bg-white text-red-500 rounded-full w-16 h-16 flex items-center justify-center hover:bg-gray-100 transition transform">
+                                <i class="fas fa-play text-2xl ml-1"></i>
+                            </button>
+                            <button onclick="nextTrack()" class="text-gray-400 hover:text-white transition p-2">
+                                <i class="fas fa-step-forward text-xl"></i>
+                            </button>
+                        </div>
+
+                        <!-- Volume Control -->
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-volume-down text-gray-400"></i>
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="70" 
+                                class="volume-slider flex-1 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                id="volumeSlider"
+                                onchange="changeVolume(this.value)"
+                            >
+                            <i class="fas fa-volume-up text-gray-400"></i>
+                        </div>
+
+                        <!-- Equalizer Visualizer -->
+                        <div class="flex items-center justify-center space-x-4">
+                            <div class="equalizer paused" id="equalizer">
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                            </div>
+                            <span class="text-sm text-gray-400">Visualização em tempo real</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Playlist Section -->
+        <section id="playlist" class="mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <i class="fas fa-music mr-3 text-primary"></i>
+                Playlist da Rádio Pop Goiaia
+            </h2>
+            <div class="glass-effect rounded-2xl p-6">
+                <ul class="track-list space-y-3" id="playlist">
+                    <li class="flex items-center justify-between p-3 rounded-lg cursor-pointer transition active" data-track="0" onclick="selectTrack(0)">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-music text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">A Felicidade (É Guardada pelos Cães)</h3>
+                                <p class="text-sm text-gray-400">Claudio Salles</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-sm text-gray-400">3:45</span>
+                            <i class="fas fa-play text-primary"></i>
+                        </div>
+                    </li>
+                    <li class="flex items-center justify-between p-3 rounded-lg cursor-pointer transition" data-track="1" onclick="selectTrack(1)">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-music text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Sabe Com Quem Está Falando?</h3>
+                                <p class="text-sm text-gray-400">Claudio Salles</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-sm text-gray-400">4:12</span>
+                            <i class="fas fa-play text-gray-600"></i>
+                        </div>
+                    </li>
+                    <li class="flex items-center justify-between p-3 rounded-lg cursor-pointer transition" data-track="2" onclick="selectTrack(2)">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-music text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Essa Menina</h3>
+                                <p class="text-sm text-gray-400">Claudio Salles</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-sm text-gray-400">3:28</span>
+                            <i class="fas fa-play text-gray-600"></i>
+                        </div>
+                    </li>
+                    <li class="flex items-center justify-between p-3 rounded-lg cursor-pointer transition" data-track="3" onclick="selectTrack(3)">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-music text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Tribo de Jah</h3>
+                                <p class="text-sm text-gray-400">Claudio Salles</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-sm text-gray-400">5:03</span>
+                            <i class="fas fa-play text-gray-600"></i>
+                        </div>
+                    </li>
+                    <li class="flex items-center justify-between p-3 rounded-lg cursor-pointer transition" data-track="4" onclick="selectTrack(4)">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-microphone text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Entrevista Juíza Patrícia Acioli</h3>
+                                <p class="text-sm text-gray-400">Jornalismo Especial</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-sm text-gray-400">12:45</span>
+                            <i class="fas fa-play text-gray-600"></i>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <i class="fas fa-user mr-3 text-primary"></i>
+                Sobre Claudio Salles
+            </h2>
+            <div class="glass-effect rounded-2xl p-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Múltiplas paixões, uma só voz</h3>
+                        <p class="text-gray-300 mb-4">Uma trajetória construída entre a notícia, a melodia e a imagem.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-microphone-alt text-primary"></i>
+                                <span>Jornalista - Comunicador nato</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-guitar text-primary"></i>
+                                <span>Músico - Compositor e intérprete</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-video text-primary"></i>
+                                <span>Videomaker - Conteúdo audiovisual</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-robot text-primary"></i>
+                                <span>Especialista em IA - Inovação tecnológica</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Conecte-se</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="https://offstep.link/199005019499" target="_blank" class="flex items-center space-x-2 p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition">
+                                <i class="fab fa-spotify text-green-400"></i>
+                                <span>Spotify</span>
+                            </a>
+                            <a href="https://offstep.link/199005019499" target="_blank" class="flex items-center space-x-2 p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition">
+                                <i class="fab fa-apple text-red-400"></i>
+                                <span>Apple Music</span>
+                            </a>
+                            <a href="https://offstep.link/199005019499" target="_blank" class="flex items-center space-x-2 p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition">
+                                <i class="fas fa-heart text-primary"></i>
+                                <span>Deezer</span>
+                            </a>
+                            <a href="https://www.youtube.com/@ClaudioSalles" target="_blank" class="flex items-center space-x-2 p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition">
+                                <i class="fab fa-youtube text-red-500"></i>
+                                <span>YouTube</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Fixed Bottom Player -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 p-4 z-50">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <img 
+                    src="https://image.qwenlm.ai/public_source/c5706fea-6889-4daf-b88c-403b7465c5c4/1aa4791e4-ae9a-4a9b-adfb-649a05af61ed.png" 
+                    alt="Current Track" 
+                    class="w-12 h-12 rounded-lg object-cover"
+                    id="miniPlayerArt"
+                >
+                <div>
+                    <h4 class="font-semibold text-sm" id="miniPlayerTitle">A Felicidade (É Guardada pelos Cães)</h4>
+                    <p class="text-xs text-gray-400" id="miniPlayerArtist">Claudio Salles</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button onclick="previousTrack()" class="text-gray-400 hover:text-white transition">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button onclick="togglePlay()" class="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-primary-dark transition">
+                    <i class="fas fa-play text-sm ml-0.5" id="miniPlayIcon"></i>
+                </button>
+                <button onclick="nextTrack()" class="text-gray-400 hover:text-white transition">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-3">
+                <i class="fas fa-volume-down text-gray-400 text-sm"></i>
+                <input 
+                    type="range" 
+                    min="0" 
+                    max="100" 
+                    value="70" 
+                    class="w-24 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
+                    onchange="changeVolume(this.value)"
+                >
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Audio player functionality
+        let isPlaying = false;
+        let currentTrack = 0;
+        let progress = 0;
+        let progressInterval;
+        
+        const tracks = [
+            { title: "A Felicidade (É Guardada pelos Cães)", artist: "Claudio Salles", duration: "3:45" },
+            { title: "Sabe Com Quem Está Falando?", artist: "Claudio Salles", duration: "4:12" },
+            { title: "Essa Menina", artist: "Claudio Salles", duration: "3:28" },
+            { title: "Tribo de Jah", artist: "Claudio Salles", duration: "5:03" },
+            { title: "Entrevista Juíza Patrícia Acioli", artist: "Jornalismo Especial", duration: "12:45" }
+        ];
+        
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            updatePlayButton();
+            updateEqualizer();
+            
+            if (isPlaying) {
+                startProgress();
+            } else {
+                stopProgress();
+            }
+        }
+        
+        function updatePlayButton() {
+            const playButton = document.getElementById('playButton');
+            const miniPlayIcon = document.getElementById('miniPlayIcon');
+            
+            if (isPlaying) {
+                playButton.innerHTML = '<i class="fas fa-pause text-2xl"></i>';
+                miniPlayIcon.className = 'fas fa-pause text-sm';
+            } else {
+                playButton.innerHTML = '<i class="fas fa-play text-2xl ml-1"></i>';
+                miniPlayIcon.className = 'fas fa-play text-sm ml-0.5';
+            }
+        }
+        
+        function updateEqualizer() {
+            const equalizer = document.getElementById('equalizer');
+            if (isPlaying) {
+                equalizer.classList.remove('paused');
+                equalizer.classList.add('playing');
+            } else {
+                equalizer.classList.remove('playing');
+                equalizer.classList.add('paused');
+            }
+        }
+        
+        function startProgress() {
+            progressInterval = setInterval(() => {
+                progress += 0.5;
+                if (progress >= 100) {
+                    progress = 0;
+                    nextTrack();
+                }
+                updateProgress();
+            }, 1000);
+        }
+        
+        function stopProgress() {
+            clearInterval(progressInterval);
+        }
+        
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const currentTime = document.getElementById('currentTime');
+            
+            progressFill.style.width = progress + '%';
+            
+            // Update time display
+            const totalSeconds = parseDuration(tracks[currentTrack].duration);
+            const currentSeconds = Math.floor((progress / 100) * totalSeconds);
+            currentTime.textContent = formatTime(currentSeconds);
+        }
+        
+        function parseDuration(duration) {
+            const parts = duration.split(':');
+            return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function selectTrack(index) {
+            currentTrack = index;
+            progress = 0;
+            updateTrackInfo();
+            updatePlaylistHighlight();
+            
+            if (!isPlaying) {
+                togglePlay();
+            }
+        }
+        
+        function updateTrackInfo() {
+            const track = tracks[currentTrack];
+            
+            // Update main player
+            document.querySelector('#radio h2').textContent = track.title;
+            document.querySelector('#radio p.text-gray-300').textContent = track.artist;
+            document.getElementById('duration').textContent = track.duration;
+            
+            // Update mini player
+            document.getElementById('miniPlayerTitle').textContent = track.title;
+            document.getElementById('miniPlayerArtist').textContent = track.artist;
+        }
+        
+        function updatePlaylistHighlight() {
+            const playlistItems = document.querySelectorAll('#playlist li');
+            playlistItems.forEach((item, index) => {
+                const playIcon = item.querySelector('.fa-play');
+                if (index === currentTrack) {
+                    item.classList.add('active');
+                    playIcon.className = 'fas fa-play text-primary';
+                } else {
+                    item.classList.remove('active');
+                    playIcon.className = 'fas fa-play text-gray-600';
+                }
+            });
+        }
+        
+        function previousTrack() {
+            currentTrack = currentTrack > 0 ? currentTrack - 1 : tracks.length - 1;
+            selectTrack(currentTrack);
+        }
+        
+        function nextTrack() {
+            currentTrack = currentTrack < tracks.length - 1 ? currentTrack + 1 : 0;
+            selectTrack(currentTrack);
+        }
+        
+        function changeVolume(value) {
+            // In a real implementation, this would control audio volume
+            console.log('Volume changed to:', value);
+        }
+        
+        // Progress bar click handler
+        document.getElementById('progressBar').addEventListener('click', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const percentage = (x / rect.width) * 100;
+            progress = percentage;
+            updateProgress();
+        });
+        
+        // Initialize
+        updatePlaylistHighlight();
+    </script>
+</body>
+</html>
